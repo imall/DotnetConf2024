@@ -32,13 +32,26 @@ public static class SwaggerSettings
                 });
         });
     }
-    
+
     /// <summary>
     /// Swagger 中介軟體設定
     /// </summary>
     public static void UseSwaggerSettings(this WebApplication app)
     {
-        app.UseSwagger();
-        app.UseSwaggerUI();
+       
+        app.UseSwagger(setupAction =>
+        {
+            // Open API 規格進入點，如果不需要異動，可以不用設定
+            setupAction.RouteTemplate = "swagger/{documentName}/swagger.json";
+        });
+        
+        app.UseSwaggerUI(setupAction =>
+        {
+            // UI 讀取 OpenAPI 規格路徑
+            setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Dotnet conf 2024 範例專案");
+            
+            // UI 進入點
+            setupAction.RoutePrefix = string.Empty;
+        });
     }
 }
