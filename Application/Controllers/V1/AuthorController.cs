@@ -10,6 +10,8 @@ namespace Application.Controllers.V1;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
+[Produces("application/json", "application/xml")] // 設定回應格式
+[Consumes("application/json")] // 設定接收格式
 public class AuthorController(AuthorRepository authorRepository) : ControllerBase
 {
     /// <summary>

@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddXmlSerializerFormatters();
 builder.Services.AddSingleton<AuthorRepository>();
 builder.Services.AddSingleton<BookRepository>();
 
