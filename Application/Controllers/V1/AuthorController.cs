@@ -1,6 +1,7 @@
 using Application.Models;
 using Application.Repository;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Application.Controllers.V1;
 
@@ -15,7 +16,9 @@ public class AuthorController(AuthorRepository authorRepository) : ControllerBas
     /// 取得全部作者
     /// </summary>
     /// <returns>所有作者資訊</returns>
+    /// <response code="200">成功取得所有作者</response>
     [HttpGet(Name = "GetAllAuthors")]
+    [ProducesResponseType(typeof(IEnumerable<Author>), StatusCodes.Status200OK)]
     public ActionResult<IEnumerable<Author>> GetAllAuthors()
     {
         return Ok(authorRepository.GetAll());
@@ -29,7 +32,12 @@ public class AuthorController(AuthorRepository authorRepository) : ControllerBas
     /// <remarks>
     /// 此方法會根據提供的作者 ID 查詢對應的作者詳細資訊。
     /// </remarks>
+    /// <response code="200">成功取得作者</response>
+    /// <response code="404">找不到作者</response>
     [HttpGet("{id:int}", Name = "GetAuthorById")]
+    [ProducesResponseType(typeof(Author), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
     public ActionResult<Author> GetAuthorById(int id)
     {
         var author = authorRepository.GetById(id);
@@ -46,7 +54,12 @@ public class AuthorController(AuthorRepository authorRepository) : ControllerBas
     /// </summary>
     /// <param name="id">作者ID</param>
     /// <returns>作者擁有的書目</returns>
+    /// <response code="200">成功取得作者的書籍</response>
+    /// <response code="404">找不到作者</response>
     [HttpGet("{id:int}/books", Name = "GetBooksByAuthor")]
+    [ProducesResponseType(typeof(Book), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
     public ActionResult<IEnumerable<Book>> GetBooksByAuthor(int id)
     {
         var author = authorRepository.GetById(id);
@@ -90,7 +103,12 @@ public class AuthorController(AuthorRepository authorRepository) : ControllerBas
     /// 
     /// **若新增成功，系統將回傳 `true`；失敗則回傳 `false`。**
     /// </remarks>
+    /// <response code="200">新增成功</response>
+    /// <response code="400">ID 重複，新增失敗</response>
     [HttpPost(Name = "CreateAuthor")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesDefaultResponseType]
     public ActionResult<bool> CreateAuthor([FromBody] Author author)
     {
         var result = authorRepository.Create(author);
@@ -108,7 +126,14 @@ public class AuthorController(AuthorRepository authorRepository) : ControllerBas
     /// <param name="id">欲更新的作者 ID</param>
     /// <param name="author">作者資訊</param>
     /// <returns>更新成功與否</returns>
+    /// <response code="200">更新成功</response>
+    /// <response code="400">ID 不一致，更新失敗</response>
+    /// <response code="404">找不到作者</response>
     [HttpPut("{id:int}", Name = "UpdateAuthor")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
     public IActionResult UpdateAuthor(int id, [FromBody] Author author)
     {
         if (id != author.Id)
@@ -131,7 +156,12 @@ public class AuthorController(AuthorRepository authorRepository) : ControllerBas
     /// </summary>
     /// <param name="id">作者 ID</param>
     /// <returns>刪除成功與否</returns>
+    /// <response code="200">刪除成功</response>
+    /// <response code="404">找不到作者</response>
     [HttpDelete("{id:int}", Name = "DeleteAuthor")]
+    [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+    [ProducesDefaultResponseType]
     public IActionResult DeleteAuthor(int id)
     {
         var result = authorRepository.Delete(id);
