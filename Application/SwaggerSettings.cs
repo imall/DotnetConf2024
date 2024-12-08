@@ -1,3 +1,4 @@
+using System.Reflection;
 using Microsoft.OpenApi.Models;
 
 namespace Application;
@@ -30,6 +31,11 @@ public static class SwaggerSettings
                         Url = new Uri("https://opensource.org/licenses/MIT")
                     },
                 });
+
+            var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFilename);
+            // 第二個參數設為 true，可開啟 Controller 的說明
+            setupAction.IncludeXmlComments(xmlPath, true);
         });
     }
 
@@ -38,18 +44,17 @@ public static class SwaggerSettings
     /// </summary>
     public static void UseSwaggerSettings(this WebApplication app)
     {
-       
         app.UseSwagger(setupAction =>
         {
             // Open API 規格進入點，如果不需要異動，可以不用設定
             setupAction.RouteTemplate = "swagger/{documentName}/swagger.json";
         });
-        
+
         app.UseSwaggerUI(setupAction =>
         {
             // UI 讀取 OpenAPI 規格路徑
             setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Dotnet conf 2024 範例專案");
-            
+
             // UI 進入點
             setupAction.RoutePrefix = string.Empty;
         });
