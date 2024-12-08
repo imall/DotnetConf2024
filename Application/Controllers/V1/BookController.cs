@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers.V1;
 
+/// <summary>
+/// 書刊操作
+/// </summary>
 [ApiController]
 [Route("api/[controller]")]
 public class BookController : ControllerBase
@@ -15,12 +18,21 @@ public class BookController : ControllerBase
         _bookRepository = bookRepository;
     }
     
+    /// <summary>
+    /// 取得全部書刊
+    /// </summary>
+    /// <returns>所有藏書</returns>
     [HttpGet(Name = "GetAllBooks")]
     public ActionResult<IEnumerable<Book>> GetAllBooks()
     {
         return Ok(_bookRepository.GetAll());
     }
     
+    /// <summary>
+    /// 透過書籍 ID 取得書籍資訊
+    /// </summary>
+    /// <param name="id">你想查閱的書籍 ID</param>
+    /// <returns>書籍資訊</returns>
     [HttpGet("{id:int}", Name = "GetBookById")]
     public ActionResult<Book> GetBookById(int id)
     {
@@ -33,6 +45,11 @@ public class BookController : ControllerBase
         return Ok(book);
     }
     
+    /// <summary>
+    /// 建立書籍
+    /// </summary>
+    /// <param name="book">你想新增的書刊內容</param>
+    /// <returns>建立成功與否</returns>
     [HttpPost(Name = "CreateBook")]
     public ActionResult<bool> CreateBook([FromBody] Book book)
     {
@@ -45,6 +62,12 @@ public class BookController : ControllerBase
         return Ok(result);
     }
     
+    /// <summary>
+    /// 更新書籍資訊
+    /// </summary>
+    /// <param name="id">你想更新的書籍 ID</param>
+    /// <param name="book">你想更新的書籍資料</param>
+    /// <returns>更新成功與否</returns>
     [HttpPut("{id:int}", Name = "UpdateBook")]
     public ActionResult<bool> UpdateBook(int id, [FromBody] Book book)
     {
@@ -62,6 +85,11 @@ public class BookController : ControllerBase
         return Ok(result);
     }
     
+    /// <summary>
+    /// 刪除書籍
+    /// </summary>
+    /// <param name="id">你想刪除的書籍 ID</param>
+    /// <returns>刪除成功與否</returns>
     [HttpDelete("{id:int}", Name = "DeleteBook")]
     public ActionResult<bool> DeleteBook(int id)
     {
