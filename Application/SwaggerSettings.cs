@@ -16,11 +16,30 @@ public static class SwaggerSettings
     {
         services.AddSwaggerGen(setupAction =>
         {
-            setupAction.SwaggerDoc("v1",
+            setupAction.SwaggerDoc("dotnetconf2024V1",
                 new OpenApiInfo
                 {
-                    Title = "Dotnet conf 2024 範例專案",
+                    Title = "Dotnet conf 2024 範例專案 第一版",
                     Version = "v1",
+                    Description = "Dotnet conf 2024 Taiwan Swagger 範例",
+                    TermsOfService = new Uri("https://dotnetconf.study4.tw/Code-Of-Conduct"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Study4tw",
+                        Url = new Uri("https://www.facebook.com/groups/study4tw/")
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "MIT License",
+                        Url = new Uri("https://opensource.org/licenses/MIT")
+                    },
+                });
+            
+            setupAction.SwaggerDoc("dotnetconf2024V2",
+                new OpenApiInfo
+                {
+                    Title = "Dotnet conf 2024 範例專案 第二版",
+                    Version = "v2",
                     Description = "Dotnet conf 2024 Taiwan Swagger 範例",
                     TermsOfService = new Uri("https://dotnetconf.study4.tw/Code-Of-Conduct"),
                     Contact = new OpenApiContact
@@ -56,7 +75,9 @@ public static class SwaggerSettings
         app.UseSwaggerUI(setupAction =>
         {
             // UI 讀取 OpenAPI 規格路徑
-            setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Dotnet conf 2024 範例專案");
+            setupAction.SwaggerEndpoint("/swagger/dotnetconf2024V1/swagger.json", "Dotnet conf 2024 範例專案 V1");
+            
+            setupAction.SwaggerEndpoint("/swagger/dotnetconf2024V2/swagger.json", "Dotnet conf 2024 範例專案 V2");
 
             // UI 進入點
             setupAction.RoutePrefix = string.Empty;
