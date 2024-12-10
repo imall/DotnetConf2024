@@ -1,5 +1,6 @@
 using Application.Models;
 using Application.Repository;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Application.Controllers.V2;
@@ -8,10 +9,10 @@ namespace Application.Controllers.V2;
 /// 書刊操作
 /// </summary>
 [ApiController]
-[Route("api/v2/[controller]")]
+[ApiVersion(2.0)]
+[Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json", "application/xml")] // 設定回應格式
 [Consumes("application/json")] // 設定接收格式
-[ApiExplorerSettings(GroupName = "dotnetconf2024V2")]
 public class BookController : ControllerBase
 {
     private readonly BookRepository _bookRepository;

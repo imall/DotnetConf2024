@@ -1,7 +1,7 @@
 using Application.Models;
 using Application.Repository;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 namespace Application.Controllers.V1;
 
@@ -10,10 +10,10 @@ namespace Application.Controllers.V1;
 /// </summary>
 [Obsolete]
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion(1.0, Deprecated = true)] // 標記為棄用
+[Route("api/v{version:apiVersion}/[controller]")]
 [Produces("application/json", "application/xml")] // 設定回應格式
 [Consumes("application/json")] // 設定接收格式
-[ApiExplorerSettings(GroupName = "dotnetconf2024V1")]
 public class AuthorController(AuthorRepository authorRepository) : ControllerBase
 {
     /// <summary>
