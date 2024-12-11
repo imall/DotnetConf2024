@@ -1,5 +1,6 @@
 using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Application;
 
@@ -59,6 +60,25 @@ public static class SwaggerSettings
 
             // UI 進入點
             setupAction.RoutePrefix = string.Empty;
+            
+            // 顯示請求時間
+            setupAction.DisplayRequestDuration(); 
+            
+            // 顯示 Model 而非範例
+            setupAction.DefaultModelRendering(ModelRendering.Model); 
+            
+            // 啟用深度連結 (錨點連結)
+            setupAction.EnableDeepLinking();
+            
+            // 啟用篩選框
+            setupAction.EnableFilter(); 
+            
+            // 模型展開深度，0 表示不展開，預設為 1
+            setupAction.DefaultModelExpandDepth(3); 
+            
+            // 文件展開設定
+            setupAction.DocExpansion(DocExpansion.List);
+            
         });
     }
 }
